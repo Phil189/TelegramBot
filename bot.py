@@ -1,9 +1,10 @@
 from telegram import Bot
 import asyncio
+import os
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from datetime import timezone
 
-TOKEN = "8873854213:AAHtN3_UJgg_gmFiEEnKFpLYE6RrjH6Iqfw"
+TOKEN = os.getenv("TOKEN")
 CHANNEL_ID = "@philsaf18"
 
 MESSAGE = """
@@ -29,20 +30,18 @@ async def send_message():
 async def main():
     scheduler = AsyncIOScheduler(timezone=timezone.utc)
 
-    # Every Sunday at 5:00 PM GMT (UTC)
     scheduler.add_job(
-    send_message,
-    trigger="cron",
-    day_of_week="sun",
-    hour=17,
-    minute=0
-)
+        send_message,
+        trigger="cron",
+        day_of_week="sun",
+        hour=17,
+        minute=0
+    )
 
     scheduler.start()
 
-    print("Bot scheduler is running...")
+    print("Telegram bot scheduler is running...")
 
-    # Keep the bot alive
     while True:
         await asyncio.sleep(60)
 
